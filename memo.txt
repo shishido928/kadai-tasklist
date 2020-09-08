@@ -1,0 +1,45 @@
+tasks テーブルに status カラムを追加してください。
+status は、MySQL上で VARCHAR(10) となるように作成しましょう。
+なお、カラムの最大文字数を指定する方法は、次のドキュメントを参考にしてください。
+参考：使用できるカラムタイプ
+migrationFile:$table->string('task', 10);
+
+
+作成と編集ページで status を編集可能にしてください。
+（statusはinput要素のtype属性：textにします）
+{!! Form::text('content', null, ['class' => 'form-control']) !!}を追加
+
+
+一覧と詳細ページで status を表示してください。
+        
+        <td>{{ $task->status }}</td>
+        
+        <tr>
+            <th>タイトル</th>
+            <td>{{ $task->status }}</td>
+        </tr>
+
+
+status に「空文字を許さないバリデーション」と
+「10文字を超える文字数を許さない」バリデーションをつけ、
+エラーとなった際は画面へ表示するようにしてください。
+（content に対するバリデーションの追加は任意としますが、
+status には必ず2つのバリデーションを実装してください）
+
+TasksController.php:store&update
+$request->validate([
+            'status' => 'required|max:10',
+        ]);
+
+tasks/%.blade.php %=create&edit
+    @if (count($errors) > 0)
+        <ul class="alert alert-danger" role="alert">
+            @foreach ($errors->all() as $error)
+                <li class="ml-4">{{ $error }}</li>
+            @endforeach
+        </ul>
+    @endif
+
+@include('commons.error_tasks')で
+layout/app.blade.phpから
+commons/error_tasks.blade.phpを呼び出し
