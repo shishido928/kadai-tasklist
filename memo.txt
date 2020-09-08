@@ -2,7 +2,7 @@ tasks テーブルに status カラムを追加してください。
 status は、MySQL上で VARCHAR(10) となるように作成しましょう。
 なお、カラムの最大文字数を指定する方法は、次のドキュメントを参考にしてください。
 参考：使用できるカラムタイプ
-migrationFile:$table->string('task', 10);
+migrationFile:$table->string('task', 10);を直してmigrationFile:$table->string('status', 10);(fixed参照)
 
 
 作成と編集ページで status を編集可能にしてください。
@@ -15,7 +15,7 @@ migrationFile:$table->string('task', 10);
         <td>{{ $task->status }}</td>
         
         <tr>
-            <th>タイトル</th>
+            <th>タイトル</th>(fixedにて修正)
             <td>{{ $task->status }}</td>
         </tr>
 
@@ -43,3 +43,26 @@ tasks/%.blade.php %=create&edit
 @include('commons.error_tasks')で
 layout/app.blade.phpから
 commons/error_tasks.blade.phpを呼び出し
+
+
+fixed
+
+migrationFile:(2020_09_08_160403_add_status_to_tasks_table.php)
+カラム名をtaskからstatusに直す
+
+viewFile:(show.blade.php)
+詳細ページで「タイトル」から「ステータス」に修正
+
+
+add
+
+controllerFile:
+$request->validate([
+            'status' => 'required|max:10',
+        ]);
+から
+$request->validate([
+            'status' => 'required|max:10',
+            'content' => 'required|max:255',
+        ]);
+に変更
