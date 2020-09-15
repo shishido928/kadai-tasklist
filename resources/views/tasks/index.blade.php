@@ -24,8 +24,10 @@
             </tbody>
         </table>
     @endif
-    
+
     {{-- タスク作成ページへのリンク --}}
     {!! link_to_route('tasks.create', '新規タスクの作成', [], ['class' => 'btn btn-primary']) !!}
+    {{-- ユーザ登録ページへのリンク --}}
+    {!! link_to_route('signup.get', 'Sign up now!', [], ['class' => 'btn btn-lg btn-primary']) !!}
 
 @endsection
