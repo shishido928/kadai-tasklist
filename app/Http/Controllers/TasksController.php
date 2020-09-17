@@ -40,6 +40,7 @@ class TasksController extends Controller
             'content' => 'required|max:255',
         ]);
         
+        
         // タスクを作成
         $task = new Task;
         $task->status = $request->status;

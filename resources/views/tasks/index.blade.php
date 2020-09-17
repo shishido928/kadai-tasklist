@@ -2,9 +2,9 @@
 
 @section('content')
 
-<h1>タスク一覧</h1>
-
+@if (Auth::check())
     @if (count($tasks) > 0)
+        <h1>タスク一覧</h1>
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -23,11 +23,13 @@
                 @endforeach
             </tbody>
         </table>
+        {{-- タスク作成ページへのリンク --}}
+        {!! link_to_route('tasks.create', '新規タスクの作成', [], ['class' => 'btn btn-primary']) !!}
     @endif
-
-    {{-- タスク作成ページへのリンク --}}
-    {!! link_to_route('tasks.create', '新規タスクの作成', [], ['class' => 'btn btn-primary']) !!}
+@else
+    <h2>アカウント作成へ</h2><br>
     {{-- ユーザ登録ページへのリンク --}}
     {!! link_to_route('signup.get', 'Sign up now!', [], ['class' => 'btn btn-lg btn-primary']) !!}
+@endif
 
 @endsection
