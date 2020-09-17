@@ -11,6 +11,7 @@ class TasksController extends Controller
     // getでtasks/にアクセスされた場合の「一覧表示処理」
     public function index()
     {
+        
         // タスク一覧を取得
         $tasks = Task::all();
 
