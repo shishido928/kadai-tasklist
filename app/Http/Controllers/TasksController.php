@@ -14,11 +14,12 @@ class TasksController extends Controller
         
         // タスク一覧を取得
         $tasks = Task::all();
-
+            
         // タスク一覧ビューでそれを表示
         return view('tasks.index', [
             'tasks' => $tasks,
         ]);
+        
     }
 
    // getでtasks/createにアクセスされた場合の「新規登録画面表示処理」
@@ -56,11 +57,18 @@ class TasksController extends Controller
     {
         // idの値でメッセージを検索して取得
         $task = Task::findOrFail($id);
-
-        // メッセージ詳細ビューでそれを表示
-        return view('tasks.show', [
-            'task' => $task,
-        ]);
+        
+        // 認証済みユーザ（閲覧者）がその投稿の所有者である場合は、投稿を表示
+        if (\Auth::id() === $task->user_id) {
+            // メッセージ詳細ビューでそれを表示
+            return view('tasks.show', [
+                'task' => $task,
+            ]);
+        }
+        else{
+            // そうでなければトップページへリダイレクトさせる
+            return redirect('/');
+        }
     }
 
     // getでtasks/（任意のid）/editにアクセスされた場合の「更新画面表示処理」
@@ -68,11 +76,18 @@ class TasksController extends Controller
     {
         // idの値でタスクを検索して取得
         $task = Task::findOrFail($id);
-
-        // タスク編集ビューでそれを表示
-        return view('tasks.edit', [
-            'task' => $task,
-        ]);
+        
+         // 認証済みユーザ（閲覧者）がその投稿の所有者である場合は、更新画面を表示
+        if (\Auth::id() === $task->user_id) {
+            // タスク編集ビューでそれを表示
+            return view('tasks.edit', [
+                'task' => $task,
+            ]);
+        }
+        else{
+            // そうでなければトップページへリダイレクトさせる
+            return redirect('/');
+        }
     }
 
     // putまたはpatchでtasks/（任意のid）にアクセスされた場合の「更新処理」
